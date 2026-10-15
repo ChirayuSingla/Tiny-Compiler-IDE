@@ -954,7 +954,7 @@ def main():
     D.page_break()
     D.h1("Appendix A. Setup and CLI commands")
     D.p("**Windows PowerShell**")
-    D.code("git clone https://github.com/<owner>/Chirayu-Project.git\n"
+    D.code("git clone https://github.com/Hydra-Of-Malice/Chirayu-Project.git\n"
            "cd Chirayu-Project\n"
            "python --version                      # 3.8 or newer\n"
            "python main.py examples/hello.tiny\n"

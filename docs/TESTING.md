@@ -33,7 +33,7 @@ Expected outputs in `examples/*.expected` were checked by hand (for example `-7 
 | `test_ir.py` | 24 | PASS |
 | `test_codegen_vm.py` | 39 | PASS |
 | `test_end_to_end.py` | 28 | PASS |
-| **all** | **198** | **PASS** (5.663s) |
+| **all** | **198** | **PASS** (5.893s) |
 
 ## Example programs
 

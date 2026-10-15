@@ -40,7 +40,7 @@ silently accepted.
 ### Windows PowerShell
 
 ```powershell
-git clone https://github.com/<owner>/Chirayu-Project.git
+git clone https://github.com/Hydra-Of-Malice/Chirayu-Project.git
 cd Chirayu-Project
 python --version            # must be 3.8 or newer
 python main.py examples/hello.tiny
@@ -52,7 +52,7 @@ No `pip install` is needed to run the compiler or the tests.
 ### Linux / macOS
 
 ```bash
-git clone https://github.com/<owner>/Chirayu-Project.git
+git clone https://github.com/Hydra-Of-Malice/Chirayu-Project.git
 cd Chirayu-Project
 python3 main.py examples/hello.tiny
 ```
