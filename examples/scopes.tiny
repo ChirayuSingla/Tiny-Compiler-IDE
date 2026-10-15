@@ -1,0 +1,14 @@
+// scopes.tiny - block scope and shadowing
+var x: int = 1;
+write "outer x =", x;
+{
+    var x: int = 2;          // shadows the outer x
+    write "inner x =", x;
+    x = x + 10;
+    write "inner x after update =", x;
+}
+write "outer x again =", x;
+if (x == 1) {
+    var y: int = x + 41;
+    write "y =", y;
+}

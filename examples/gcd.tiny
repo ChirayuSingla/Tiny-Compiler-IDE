@@ -1,0 +1,12 @@
+// gcd.tiny - Euclid's algorithm on two numbers read from input
+var a: int;
+var b: int;
+read a;
+read b;
+write "gcd of", a, "and", b, "is:";
+while (b != 0) {
+    var t: int = b;
+    b = a % b;
+    a = t;
+}
+write a;

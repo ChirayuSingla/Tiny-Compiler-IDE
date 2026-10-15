@@ -1,0 +1,15 @@
+// loop.tiny - while loops: sum of 1..10 and a countdown
+var i: int = 1;
+var sum: int = 0;
+while (i <= 10) {
+    sum = sum + i;
+    i = i + 1;
+}
+write "sum of 1..10 =", sum;
+
+var n: int = 5;
+while (n > 0) {
+    write n;
+    n = n - 1;
+}
+write "liftoff";

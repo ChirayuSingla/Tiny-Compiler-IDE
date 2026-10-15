@@ -1,0 +1,5 @@
+outer x = 1
+inner x = 2
+inner x after update = 12
+outer x again = 1
+y = 42

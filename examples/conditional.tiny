@@ -1,0 +1,19 @@
+// conditional.tiny - if / else if / else and boolean operators
+var n: int = 15;
+if (n % 3 == 0 and n % 5 == 0) {
+    write "FizzBuzz";
+} else if (n % 3 == 0) {
+    write "Fizz";
+} else if (n % 5 == 0) {
+    write "Buzz";
+} else {
+    write n;
+}
+
+var x: int = -4;
+if (x < 0) {
+    write "x is negative";
+}
+if (not (x >= 0) or x == 0) {
+    write "x is not positive";
+}

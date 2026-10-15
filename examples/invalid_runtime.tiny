@@ -1,0 +1,7 @@
+// invalid_runtime.tiny - compiles fine, fails while running (divisor comes from input)
+var a: int = 100;
+var d: int;
+read d;
+write "dividing 100 by", d;
+write a / d;
+write "never printed";

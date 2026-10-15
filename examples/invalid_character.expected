@@ -1,0 +1,7 @@
+examples/invalid_character.tiny:2:16: lexical error: invalid character '@'
+    2 | var x: int = 5 @ 3;
+      |                ^
+examples/invalid_character.tiny:3:9: lexical error: invalid character '#'
+    3 | write x # 2;
+      |         ^
+examples/invalid_character.tiny: 2 errors; compilation failed.

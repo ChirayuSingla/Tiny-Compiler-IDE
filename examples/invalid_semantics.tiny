@@ -1,0 +1,11 @@
+// invalid_semantics.tiny - syntactically valid, but semantically wrong
+var x: int = 10;
+var x: int = 20;          // duplicate declaration
+y = 5;                    // undeclared variable
+z = z + 1;                // used before its declaration
+var z: int = 0;
+var flag: bool = x;       // int assigned to bool
+x = true;                 // bool assigned to int
+if (x) { write "int is not a condition"; }
+write x + true;           // invalid operand types
+write 10 / (4 - 4);       // division by a constant zero

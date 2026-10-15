@@ -1,0 +1,10 @@
+// arithmetic.tiny - precedence, associativity, unary minus, / and % (truncate toward zero)
+var a: int = 7;
+var b: int = 3;
+write "a + b * 2      =", a + b * 2;
+write "(a + b) * 2    =", (a + b) * 2;
+write "a - b - 1      =", a - b - 1;
+write "a / b, a % b   =", a / b, a % b;
+write "-a / b, -a % b =", -a / b, -a % b;
+write "-(a - b) * 2   =", -(a - b) * 2;
+write "100 / 5 / 2    =", 100 / 5 / 2;

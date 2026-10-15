@@ -1,0 +1,13 @@
+examples/invalid_syntax.tiny:2:15: syntax error: expected ';' at the end of the declaration, found identifier 'x'
+    2 | var x: int = 5
+      |               ^
+examples/invalid_syntax.tiny:3:8: syntax error: expected an expression, found ';'
+    3 | x = x + ;
+      |        ^
+examples/invalid_syntax.tiny:4:11: syntax error: expected ')' after the condition, found '{'
+    4 | if (x > 2 {
+      |           ^
+examples/invalid_syntax.tiny:7:7: syntax error: expected '(' after 'while', found identifier 'x'
+    7 | while x < 10 {
+      |       ^
+examples/invalid_syntax.tiny: 4 errors; compilation failed.

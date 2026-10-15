@@ -1,0 +1,3 @@
+// invalid_character.tiny - '@' and '#' are not Tiny characters
+var x: int = 5 @ 3;
+write x # 2;

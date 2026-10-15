@@ -1,0 +1,9 @@
+// invalid_syntax.tiny - several syntax errors (all are reported)
+var x: int = 5
+x = x + ;
+if (x > 2 {
+    write "big";
+}
+while x < 10 {
+    x = x + 1;
+}

@@ -1,0 +1,28 @@
+examples/invalid_semantics.tiny:3:5: semantic error: variable 'x' is already declared in this scope (first declared at line 2:5)
+    3 | var x: int = 20;          // duplicate declaration
+      |     ^
+examples/invalid_semantics.tiny:4:1: semantic error: variable 'y' is not declared (declare it with 'var y: int;')
+    4 | y = 5;                    // undeclared variable
+      | ^
+examples/invalid_semantics.tiny:5:1: semantic error: variable 'z' is used before its declaration (it is declared later, at line 6)
+    5 | z = z + 1;                // used before its declaration
+      | ^
+examples/invalid_semantics.tiny:5:5: semantic error: variable 'z' is used before its declaration (it is declared later, at line 6)
+    5 | z = z + 1;                // used before its declaration
+      |     ^
+examples/invalid_semantics.tiny:7:18: semantic error: cannot initialise 'bool' variable 'flag' with a value of type 'int'
+    7 | var flag: bool = x;       // int assigned to bool
+      |                  ^
+examples/invalid_semantics.tiny:8:1: semantic error: cannot assign a value of type 'bool' to 'int' variable 'x'
+    8 | x = true;                 // bool assigned to int
+      | ^
+examples/invalid_semantics.tiny:9:5: semantic error: the condition of 'if' must be of type 'bool', not 'int' (hint: compare with a relational operator, e.g. 'x != 0')
+    9 | if (x) { write "int is not a condition"; }
+      |     ^
+examples/invalid_semantics.tiny:10:9: semantic error: operator '+' needs two 'int' operands, but got 'int' and 'bool'
+   10 | write x + true;           // invalid operand types
+      |         ^
+examples/invalid_semantics.tiny:11:10: semantic error: division by zero: the divisor of '/' is always 0
+   11 | write 10 / (4 - 4);       // division by a constant zero
+      |          ^
+examples/invalid_semantics.tiny: 9 errors; compilation failed.

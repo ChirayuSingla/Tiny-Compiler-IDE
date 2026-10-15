@@ -1,0 +1,6 @@
+ready and done = false
+ready or done  = true
+not ready      = false
+ready == done  = false
+short-circuit worked
+done = true

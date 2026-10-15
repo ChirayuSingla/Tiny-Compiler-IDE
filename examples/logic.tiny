@@ -1,0 +1,16 @@
+// logic.tiny - bool variables, short-circuit evaluation and comparison of bools
+var ready: bool = true;
+var done: bool = false;
+var zero: int = 0;
+write "ready and done =", ready and done;
+write "ready or done  =", ready or done;
+write "not ready      =", not ready;
+write "ready == done  =", ready == done;
+// the right-hand side is never evaluated, so there is no division by zero
+if (zero != 0 and 10 / zero > 1) {
+    write "unreachable";
+} else {
+    write "short-circuit worked";
+}
+done = ready and (zero == 0);
+write "done =", done;
