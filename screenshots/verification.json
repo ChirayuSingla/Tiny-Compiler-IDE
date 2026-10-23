@@ -1,0 +1,31 @@
+{
+  "platform": "windows",
+  "screenshots": [
+    "screenshots\\01_tokens.png",
+    "screenshots\\02_ast.png",
+    "screenshots\\03_input_wait.png",
+    "screenshots\\04_execution.png",
+    "screenshots\\05_semantic_error.png",
+    "screenshots\\06_stale_results.png",
+    "screenshots\\07_program_library.png",
+    "screenshots\\08_live_pipeline.png",
+    "screenshots\\09_control_flow.png",
+    "screenshots\\10_execution_trace.png",
+    "screenshots\\11_complexity.png",
+    "screenshots\\12_smart_editor.png",
+    "screenshots/13_completion_popup.png",
+    "screenshots\\14_realtime_compilation.png",
+    "screenshots\\15_terminal_input.png",
+    "screenshots\\16_terminal_results.png"
+  ],
+  "checks": [
+    "Native compile/run, VM output and all sidebar selectors passed",
+    "Interactive input 84 36 produced the expected GCD output",
+    "Semantic failure retained tokens, AST and partial symbol table",
+    "Editing source visibly marks retained results stale",
+    "Program Library, Demo Mode, real CFG/trace and O(n^2) nested-loop analysis passed",
+    "Grammar-aware completion popup offers while for wh without executing the source",
+    "Editing alone refreshed real compiler stages after debounce without VM execution or terminal changes",
+    "Run reused the successful current compilation; two sequential values typed inside terminal produced sum = 42"
+  ]
+}

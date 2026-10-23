@@ -1,0 +1,10 @@
+// Multi-step calculations
+var principal: int;
+var rate: int;
+var years: int;
+read principal;
+read rate;
+read years;
+var interest: int = principal * rate * years / 100;
+write "interest =", interest;
+write "amount =", principal + interest;

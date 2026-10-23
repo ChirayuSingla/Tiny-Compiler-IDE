@@ -1,0 +1,2 @@
+// Complex arithmetic expressions
+write (18 + 6) * 3 / 4 - 5 % 2;

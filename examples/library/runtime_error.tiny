@@ -1,0 +1,5 @@
+// Runtime error demonstration
+var d: int;
+read d;
+write "Dividing";
+write 10 / d;

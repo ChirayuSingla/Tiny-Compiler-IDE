@@ -1,0 +1,4 @@
+// Nested conditional statements
+var score: int;
+read score;
+if (score >= 90) { write "A"; } else { if (score >= 75) { write "B"; } else { write "C"; } }

@@ -1,0 +1,10 @@
+// Prime number checker
+var n: int;
+read n;
+var divisor: int = 2;
+var prime: bool = n >= 2;
+while (divisor * divisor <= n and prime) {
+    if (n % divisor == 0) { prime = false; }
+    divisor = divisor + 1;
+}
+if (prime) { write "prime", n; } else { write "not prime", n; }

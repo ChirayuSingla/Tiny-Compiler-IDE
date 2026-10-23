@@ -1,0 +1,6 @@
+// User input and output
+var a: int;
+var b: int;
+read a;
+read b;
+write "sum =", a + b;

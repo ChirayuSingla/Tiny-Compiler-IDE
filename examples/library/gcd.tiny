@@ -1,0 +1,7 @@
+// Greatest Common Divisor
+var a: int;
+var b: int;
+read a;
+read b;
+while (b != 0) { var t: int = b; b = a % b; a = t; }
+write "GCD =", a;

@@ -1,7 +1,7 @@
 """High-level API that chains all compiler phases."""
 from __future__ import annotations
 
-from typing import Iterable, List, Optional
+from typing import Callable, Iterable, List, Optional
 
 from . import ast_nodes as A
 from .codegen import VMInstr, generate_code
@@ -32,7 +32,7 @@ class CompilationResult:
         return self.code is not None and not self.diagnostics.has_errors()
 
 
-def compile_source(source: str) -> CompilationResult:
+def compile_source(source: str, on_stage: Optional[Callable] = None) -> CompilationResult:
     """Run lexer -> parser -> semantic analysis -> IR -> code generation.
 
     The pipeline stops after the first phase that reports errors, so that
@@ -40,17 +40,33 @@ def compile_source(source: str) -> CompilationResult:
     """
     res = CompilationResult(source)
     diags = res.diagnostics
-    res.tokens = tokenize(source, diags)
-    if diags.has_errors():
-        return res
-    res.ast = parse(res.tokens, diags)
-    if diags.has_errors():
-        return res
-    res.symbols = analyze(res.ast, diags)
-    if diags.has_errors():
-        return res
-    res.ir = generate_ir(res.ast)
-    res.code = generate_code(res.ir)
+    # Observers receive this run's real partial result; callers retaining an
+    # event across threads must copy it because semantic analysis annotates ASTs.
+    def notify(stage, status):
+        if on_stage is not None:
+            on_stage(stage, status, res)
+
+    notify("source", "completed")
+    phases = [
+        ("lexical", "tokens", lambda: tokenize(source, diags)),
+        ("syntax", "ast", lambda: parse(res.tokens, diags)),
+        ("semantic", "symbols", lambda: analyze(res.ast, diags)),
+        ("ir", "ir", lambda: generate_ir(res.ast)),
+        ("code", "code", lambda: generate_code(res.ir)),
+    ]
+    for stage, field, action in phases:
+        notify(stage, "active")
+        try:
+            setattr(res, field, action())
+        except Exception:
+            notify(stage, "error")
+            raise
+        failed = diags.has_errors()
+        notify(stage, "error" if failed else "completed")
+        if stage == "semantic":
+            notify("symbols", "partial" if failed else "completed")
+        if failed:
+            break
     return res
 
 

@@ -1,0 +1,4 @@
+// Even or odd
+var n: int;
+read n;
+if (n % 2 == 0) { write "even"; } else { write "odd"; }

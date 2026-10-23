@@ -1,0 +1,7 @@
+// Sum of first N numbers
+var n: int;
+read n;
+var i: int = 1;
+var sum: int = 0;
+while (i <= n) { sum = sum + i; i = i + 1; }
+write sum;

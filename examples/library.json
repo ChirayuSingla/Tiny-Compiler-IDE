@@ -1,0 +1,429 @@
+[
+  {
+    "id": "hello",
+    "name": "Hello World",
+    "difficulty": "Beginner",
+    "description": "Print a greeting.",
+    "concepts": [
+      "string tokens",
+      "write",
+      "VM output"
+    ],
+    "file": "library/hello.tiny",
+    "sample_input": "",
+    "expected_output": "Hello, Tiny!\n",
+    "expected_error": null,
+    "expected_message": ""
+  },
+  {
+    "id": "variables",
+    "name": "Variable declarations",
+    "difficulty": "Beginner",
+    "description": "Declare and print integer and boolean values.",
+    "concepts": [
+      "declarations",
+      "types",
+      "symbol table"
+    ],
+    "file": "library/variables.tiny",
+    "sample_input": "",
+    "expected_output": "count = 7 ready = true\n",
+    "expected_error": null,
+    "expected_message": ""
+  },
+  {
+    "id": "arithmetic",
+    "name": "Arithmetic operations",
+    "difficulty": "Beginner",
+    "description": "Use all five integer arithmetic operators.",
+    "concepts": [
+      "arithmetic",
+      "integer division",
+      "IR"
+    ],
+    "file": "library/arithmetic.tiny",
+    "sample_input": "",
+    "expected_output": "22 12 85 3 2\n",
+    "expected_error": null,
+    "expected_message": ""
+  },
+  {
+    "id": "precedence",
+    "name": "Operator precedence",
+    "difficulty": "Beginner",
+    "description": "Compare multiplication precedence with parentheses.",
+    "concepts": [
+      "parser precedence",
+      "AST"
+    ],
+    "file": "library/precedence.tiny",
+    "sample_input": "",
+    "expected_output": "14\n20\n",
+    "expected_error": null,
+    "expected_message": ""
+  },
+  {
+    "id": "input_output",
+    "name": "User input and output",
+    "difficulty": "Beginner",
+    "description": "Read two integers and add them.",
+    "concepts": [
+      "read",
+      "typed input",
+      "write"
+    ],
+    "file": "library/input_output.tiny",
+    "sample_input": "10 20",
+    "expected_output": "sum = 30\n",
+    "expected_error": null,
+    "expected_message": ""
+  },
+  {
+    "id": "comparisons",
+    "name": "Simple comparisons",
+    "difficulty": "Beginner",
+    "description": "Print integer comparison results.",
+    "concepts": [
+      "bool expressions",
+      "comparisons"
+    ],
+    "file": "library/comparisons.tiny",
+    "sample_input": "",
+    "expected_output": "true false true\n",
+    "expected_error": null,
+    "expected_message": ""
+  },
+  {
+    "id": "if_else",
+    "name": "If and else",
+    "difficulty": "Beginner",
+    "description": "Select an outcome from a score.",
+    "concepts": [
+      "conditional branches",
+      "CFG"
+    ],
+    "file": "library/if_else.tiny",
+    "sample_input": "",
+    "expected_output": "Pass\n",
+    "expected_error": null,
+    "expected_message": ""
+  },
+  {
+    "id": "positive_negative",
+    "name": "Positive or negative",
+    "difficulty": "Beginner",
+    "description": "Classify an input integer including zero.",
+    "concepts": [
+      "input",
+      "nested if",
+      "comparison"
+    ],
+    "file": "library/positive_negative.tiny",
+    "sample_input": "-7",
+    "expected_output": "negative\n",
+    "expected_error": null,
+    "expected_message": ""
+  },
+  {
+    "id": "even_odd",
+    "name": "Even or odd",
+    "difficulty": "Beginner",
+    "description": "Use remainder to classify an integer.",
+    "concepts": [
+      "remainder",
+      "if else",
+      "input"
+    ],
+    "file": "library/even_odd.tiny",
+    "sample_input": "9",
+    "expected_output": "odd\n",
+    "expected_error": null,
+    "expected_message": ""
+  },
+  {
+    "id": "while",
+    "name": "While loop",
+    "difficulty": "Intermediate",
+    "description": "Count from one to three.",
+    "concepts": [
+      "loop",
+      "back edge",
+      "assignment"
+    ],
+    "file": "library/while.tiny",
+    "sample_input": "",
+    "expected_output": "1\n2\n3\n",
+    "expected_error": null,
+    "expected_message": ""
+  },
+  {
+    "id": "sum_n",
+    "name": "Sum of first N numbers",
+    "difficulty": "Intermediate",
+    "description": "Read N and accumulate the integers from one to N.",
+    "concepts": [
+      "linear loop",
+      "accumulator",
+      "input"
+    ],
+    "file": "library/sum_n.tiny",
+    "sample_input": "5",
+    "expected_output": "15\n",
+    "expected_error": null,
+    "expected_message": ""
+  },
+  {
+    "id": "factorial",
+    "name": "Factorial",
+    "difficulty": "Intermediate",
+    "description": "Multiply the integers from one to N.",
+    "concepts": [
+      "linear loop",
+      "multiplication",
+      "accumulator"
+    ],
+    "file": "library/factorial.tiny",
+    "sample_input": "5",
+    "expected_output": "120\n",
+    "expected_error": null,
+    "expected_message": ""
+  },
+  {
+    "id": "multiplication_table",
+    "name": "Multiplication table",
+    "difficulty": "Intermediate",
+    "description": "Print the first five multiples of a number.",
+    "concepts": [
+      "fixed loop bound",
+      "input",
+      "write"
+    ],
+    "file": "library/multiplication_table.tiny",
+    "sample_input": "7",
+    "expected_output": "7 x 1 = 7\n7 x 2 = 14\n7 x 3 = 21\n7 x 4 = 28\n7 x 5 = 35\n",
+    "expected_error": null,
+    "expected_message": ""
+  },
+  {
+    "id": "fibonacci",
+    "name": "Fibonacci sequence",
+    "difficulty": "Intermediate",
+    "description": "Generate N Fibonacci terms with scalar variables.",
+    "concepts": [
+      "loop",
+      "temporaries",
+      "variable updates"
+    ],
+    "file": "library/fibonacci.tiny",
+    "sample_input": "7",
+    "expected_output": "0\n1\n1\n2\n3\n5\n8\n",
+    "expected_error": null,
+    "expected_message": ""
+  },
+  {
+    "id": "prime",
+    "name": "Prime number checker",
+    "difficulty": "Intermediate",
+    "description": "Check divisors with a boolean early-stop flag.",
+    "concepts": [
+      "short circuit",
+      "compound loop condition",
+      "remainder"
+    ],
+    "file": "library/prime.tiny",
+    "sample_input": "17",
+    "expected_output": "prime 17\n",
+    "expected_error": null,
+    "expected_message": ""
+  },
+  {
+    "id": "gcd",
+    "name": "Greatest Common Divisor",
+    "difficulty": "Intermediate",
+    "description": "Apply Euclid's algorithm using remainder.",
+    "concepts": [
+      "data-dependent loop",
+      "remainder",
+      "input"
+    ],
+    "file": "library/gcd.tiny",
+    "sample_input": "84 36",
+    "expected_output": "GCD = 12\n",
+    "expected_error": null,
+    "expected_message": ""
+  },
+  {
+    "id": "reversal",
+    "name": "Number reversal",
+    "difficulty": "Intermediate",
+    "description": "Reverse decimal digits of a nonnegative input.",
+    "concepts": [
+      "division loop",
+      "remainder",
+      "accumulator"
+    ],
+    "file": "library/reversal.tiny",
+    "sample_input": "12340",
+    "expected_output": "4321\n",
+    "expected_error": null,
+    "expected_message": ""
+  },
+  {
+    "id": "nested_loops",
+    "name": "Nested loops",
+    "difficulty": "Advanced",
+    "description": "Visit a rectangular grid with two independent counters.",
+    "concepts": [
+      "nested loop",
+      "scope",
+      "CFG"
+    ],
+    "file": "library/nested_loops.tiny",
+    "sample_input": "2",
+    "expected_output": "1 1\n1 2\n2 1\n2 2\n",
+    "expected_error": null,
+    "expected_message": ""
+  },
+  {
+    "id": "pattern",
+    "name": "Pattern printing",
+    "difficulty": "Advanced",
+    "description": "Print a three-row pattern using supported string literals and branches.",
+    "concepts": [
+      "loop",
+      "nested conditionals",
+      "string output"
+    ],
+    "file": "library/pattern.tiny",
+    "sample_input": "",
+    "expected_output": "*\n**\n***\n",
+    "expected_error": null,
+    "expected_message": ""
+  },
+  {
+    "id": "nested_conditions",
+    "name": "Nested conditional statements",
+    "difficulty": "Advanced",
+    "description": "Classify a score with nested alternatives.",
+    "concepts": [
+      "nested branch",
+      "CFG",
+      "input"
+    ],
+    "file": "library/nested_conditions.tiny",
+    "sample_input": "85",
+    "expected_output": "B\n",
+    "expected_error": null,
+    "expected_message": ""
+  },
+  {
+    "id": "complex_arithmetic",
+    "name": "Complex arithmetic expressions",
+    "difficulty": "Advanced",
+    "description": "Inspect precedence and temporaries for a compound expression.",
+    "concepts": [
+      "precedence",
+      "AST",
+      "IR temporaries"
+    ],
+    "file": "library/complex_arithmetic.tiny",
+    "sample_input": "",
+    "expected_output": "17\n",
+    "expected_error": null,
+    "expected_message": ""
+  },
+  {
+    "id": "multi_step",
+    "name": "Multi-step calculations",
+    "difficulty": "Advanced",
+    "description": "Calculate simple interest and the final amount using integers.",
+    "concepts": [
+      "multiple inputs",
+      "integer arithmetic",
+      "typed variables"
+    ],
+    "file": "library/multi_step.tiny",
+    "sample_input": "1000 5 3",
+    "expected_output": "interest = 150\namount = 1150\n",
+    "expected_error": null,
+    "expected_message": ""
+  },
+  {
+    "id": "combined",
+    "name": "Loops conditions and input",
+    "difficulty": "Advanced",
+    "description": "Sum the even numbers up to N.",
+    "concepts": [
+      "loop",
+      "branch",
+      "input",
+      "accumulator"
+    ],
+    "file": "library/combined.tiny",
+    "sample_input": "6",
+    "expected_output": "even sum = 12\n",
+    "expected_error": null,
+    "expected_message": ""
+  },
+  {
+    "id": "lexical_error",
+    "name": "Lexical error demonstration",
+    "difficulty": "Advanced",
+    "description": "Intentionally invalid character; later compiler stages are blocked.",
+    "concepts": [
+      "lexical diagnostics",
+      "partial stages"
+    ],
+    "file": "library/lexical_error.tiny",
+    "sample_input": "",
+    "expected_output": "",
+    "expected_error": "lexical",
+    "expected_message": "invalid character"
+  },
+  {
+    "id": "syntax_error",
+    "name": "Syntax error demonstration",
+    "difficulty": "Advanced",
+    "description": "Intentionally omit the required statement semicolon.",
+    "concepts": [
+      "parser recovery",
+      "syntax diagnostics"
+    ],
+    "file": "library/syntax_error.tiny",
+    "sample_input": "",
+    "expected_output": "",
+    "expected_error": "syntax",
+    "expected_message": "expected ';'"
+  },
+  {
+    "id": "semantic_error",
+    "name": "Semantic error demonstration",
+    "difficulty": "Advanced",
+    "description": "Intentionally initialize an int with a bool.",
+    "concepts": [
+      "type checking",
+      "semantic diagnostics"
+    ],
+    "file": "library/semantic_error.tiny",
+    "sample_input": "",
+    "expected_output": "",
+    "expected_error": "semantic",
+    "expected_message": "int"
+  },
+  {
+    "id": "runtime_error",
+    "name": "Runtime error demonstration",
+    "difficulty": "Advanced",
+    "description": "Compile successfully and then divide by a supplied zero.",
+    "concepts": [
+      "runtime diagnostics",
+      "trace failure",
+      "retained output"
+    ],
+    "file": "library/runtime_error.tiny",
+    "sample_input": "0",
+    "expected_output": "Dividing\n",
+    "expected_error": "runtime",
+    "expected_message": "division by zero"
+  }
+]

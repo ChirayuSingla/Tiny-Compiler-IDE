@@ -1,234 +1,180 @@
-# Tiny Programming Language Compiler
+# Tiny Compiler IDE
 
-An educational compiler for a small, C-like **Tiny** language, written in Python (standard
-library only). It demonstrates the complete pipeline:
+A desktop IDE for writing Tiny programs and exploring the real compiler pipeline. The PySide6 interface has a highlighted editor with line numbers, individual stage inspectors, eight selectors on the right, and a terminal that remains visible as you explore.
 
-```
-Source -> Lexical analysis -> Syntax analysis -> Semantic analysis
-       -> Three-address code (IR) -> Stack-machine code -> Execution on a virtual machine
-```
+The sidebar also includes a live pipeline diagram, IR control-flow graph, recorded VM trace, searchable Program Library and conservative Complexity Analysis. The original eight compiler stages retain their positions. See the [user guide](docs/USER_GUIDE.md) for the full workflow.
 
-> **Honest scope note.** The target of the compiler is a *stack-based virtual machine* that is
-> part of this project. It does **not** generate native machine code. The Tiny language here is
-> this project's own dialect (there is no single universal "TINY" specification); it is fully
-> specified in [docs/LANGUAGE_SPEC.md](docs/LANGUAGE_SPEC.md) and
-> [docs/GRAMMAR.md](docs/GRAMMAR.md).
+![Actual Windows IDE showing the AST](screenshots/02_ast.png)
 
-* Requirements: **Python 3.8 or newer**, no third-party packages (developed and tested on
-  Python 3.9.0 / Windows 11).
-* Word project report: [report/Tiny_Programming_Language_Compiler_Report.docx](report/Tiny_Programming_Language_Compiler_Report.docx)
+## Install and launch on Windows
 
-## Supported language features
-
-| Feature | Details |
-|---|---|
-| Types | `int` (arbitrary precision), `bool` |
-| Declarations | `var x: int;`, `var b: bool = true;` (defaults `0` / `false`), block scope with shadowing |
-| Expressions | `+ - * / %`, unary `-`, parentheses, comparisons `== != < <= > >=`, `and` `or` `not` (short-circuit) |
-| Statements | assignment, `if` / `else if` / `else`, `while`, nested blocks |
-| I/O | `read x;` (int or bool), `write "text", expr, ...;` |
-| Comments | `// line` and `/* block */` |
-| Diagnostics | lexical, syntax (with error recovery), semantic, run-time errors with line:column and a caret |
-
-Known limitations: no functions, arrays, floats, strings as variables, `for`, `break`/`continue`;
-no optimisation pass; native code generation is out of scope; a single source file; integer
-division truncates toward zero. These constructs are *rejected with a clear message*, never
-silently accepted.
-
-## Setup
-
-### Windows PowerShell
+Use 64-bit Python 3.10 or newer. In PowerShell, from the extracted project folder:
 
 ```powershell
-git clone https://github.com/Hydra-Of-Malice/Chirayu-Project.git
-cd Chirayu-Project
-python --version            # must be 3.8 or newer
-python main.py examples/hello.tiny
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe gui.py
 ```
 
-If `python` is not found, try `py -3 main.py examples/hello.tiny`.
-No `pip install` is needed to run the compiler or the tests.
-
-### Linux / macOS
-
-```bash
-git clone https://github.com/Hydra-Of-Malice/Chirayu-Project.git
-cd Chirayu-Project
-python3 main.py examples/hello.tiny
-```
-
-(Use `python3` instead of `python` in all commands below.)
-
-## Usage
-
-```
-python main.py FILE [--tokens] [--ast] [--symbols] [--ir] [--code] [--all]
-                    [--check] [--backend vm|ir] [--input "TEXT"] [--trace]
-                    [--max-steps N] [--no-warnings] [--version]
-```
-
-`python -m tiny_compiler FILE ...` is equivalent.
-
-| Option | Effect |
-|---|---|
-| *(none)* | compile and run, printing only the program output |
-| `--tokens` | token stream with line:column |
-| `--ast` | abstract syntax tree (expression nodes annotated with their types) |
-| `--symbols` | symbol table (name, type, scope depth, storage name, declaration position) |
-| `--ir` | three-address code |
-| `--code` | generated stack-machine code with instruction indexes |
-| `--all` | all of the above, then the program output |
-| `--check` | compile only; do not run |
-| `--backend ir` | run the three-address code with the reference interpreter instead of the VM |
-| `--input "4 10 20"` | supply values for `read` (otherwise read from standard input) |
-| `--trace` | print each executed VM instruction and the stack (stderr) |
-| `--max-steps N` | abort after `N` executed instructions (default 5,000,000) |
-
-Exit codes: `0` success, `1` compile error, `2` usage error, `3` run-time error, `4` file could
-not be read.
-
-### Show every stage of a program
+No environment activation or execution-policy change is needed. Launch with an existing file:
 
 ```powershell
-python main.py examples/hello.tiny --all
+.\.venv\Scripts\python.exe -m tiny_compiler.ide examples\gcd.tiny
 ```
 
-```
-=== Tokens ===
-LOC      TYPE     LEXEME
-2:1      write    write
-2:7      STRING   "Hello, Tiny!"
-2:21     ;        ;
-3:1      EOF      <end of file>
+PySide6 is the GUI's only direct dependency. The compiler and CLI still use only the standard library. Report generation optionally needs `requirements-dev.txt`.
 
-=== AST ===
-Program
-`-- Write
-    `-- StringLit 'Hello, Tiny!' : string
+## Workflow
 
-=== Symbol table ===
-NAME         TYPE   SCOPE  STORAGE        DECLARED  READ?
-(no variables declared)
+1. Edit the initial sample, choose **Sample**, or use **Open**. Samples open as editable unsaved copies.
+2. After a **350 ms typing pause**, the real compiler refreshes tokens, AST, semantics, symbols, IR, VM code, CFG and complexity. Compilation never runs the program automatically. **Compile** also builds immediately.
+3. Select any stage on the right, including while a worker runs or waits for input. Navigation does not execute code or clear the terminal.
+4. Click **Run** to execute the successful compilation of the exact current source. It reuses current bytecode when available and compiles first when necessary. Invalid current source cannot execute older code. For each `read`, type in the bottom terminal field and press Enter or **Send input**. Values may share a line: enter `84 36` for `gcd.tiny`. Booleans are `true` or `false`. No external terminal or command-line input argument is needed.
+5. **Stop** cancels execution or an input wait. Compiler cancellation is checked between stages. The VM also has a 5,000,000-instruction limit.
+6. **End Input** sends EOF to a waiting read and produces the VM's normal input-exhausted diagnostic. Editing marks retained stages stale until the automatic compilation catches up. While an older VM runs, its input/output remains attached to that execution; compilation inspectors follow the edited source. Runtime and compilation revision labels show the distinction.
 
-=== Three-address code ===
-    write "Hello, Tiny!"
-    newline
-    halt
+The terminal streams actual output, prompts, echoed input, errors and running/waiting/completion records in distinct colors until **Clear Terminal** is clicked. Compilation and runtime status labels remain visible above it. Tokens, ASTs, IR and VM listings appear only in their inspectors. Automatic checks keep diagnostics in the editor and inspectors without filling the terminal. Clearing preserves results and any pending input request. Runtime results and trace remain available when a newer source is compiled, with their earlier source version clearly labelled.
 
-=== Stack-machine code ===
-0000  PRINT_STR "Hello, Tiny!"
-0001  PRINT_NL
-0002  HALT
-
-=== Program output ===
-Hello, Tiny!
-```
-
-## Examples and expected output
-
-Each example has a hand-checked `examples/<name>.expected` file. The test-suite runs every
-example and compares the real output with that file, so these outputs are verified, not assumed.
-
-| Run (PowerShell) | Expected output |
-|---|---|
-| `python main.py examples/hello.tiny` | `Hello, Tiny!` |
-| `python main.py examples/arithmetic.tiny` | [arithmetic.expected](examples/arithmetic.expected) (e.g. `a + b * 2      = 13`) |
-| `python main.py examples/conditional.tiny` | `FizzBuzz`, `x is negative`, `x is not positive` |
-| `python main.py examples/loop.tiny` | `sum of 1..10 = 55`, then `5 4 3 2 1` (one per line) and `liftoff` |
-| `Get-Content examples/input_output.input \| python main.py examples/input_output.tiny` | `count = 4`, `sum   = 105`, `average (integer) = 26` |
-| `python main.py examples/input_output.tiny --input "4 10 20 30 45"` | same as the line above |
-| `python main.py examples/fibonacci.tiny` | `0 1 1 2 3 5 8 13 21 34 55 89` (one per line) |
-| `python main.py examples/gcd.tiny --input "84 36"` | `gcd of 84 and 36 is:` / `12` |
-| `python main.py examples/scopes.tiny` | block scope and shadowing demo ([scopes.expected](examples/scopes.expected)) |
-| `python main.py examples/logic.tiny` | bool and short-circuit demo ([logic.expected](examples/logic.expected)) |
-
-Bash equivalent for stdin: `python3 main.py examples/input_output.tiny < examples/input_output.input`.
-
-### Error examples (must fail with a readable message, never a Python traceback)
-
-| Run | Exit code | What it shows |
+| Control | Shortcut | Behavior |
 |---|---|---|
-| `python main.py examples/invalid_character.tiny` | 1 | lexical errors for `@` and `#` |
-| `python main.py examples/invalid_syntax.tiny` | 1 | 4 syntax errors reported in one run |
-| `python main.py examples/invalid_semantics.tiny` | 1 | duplicate / undeclared / use-before-declaration / type / constant division by zero |
-| `python main.py examples/invalid_runtime.tiny --input 0` | 3 | run-time `division by zero` |
+| New / Open / Save | Ctrl+N / Ctrl+O / Ctrl+S | UTF-8 files and unsaved-change protection |
+| Save As | Ctrl+Shift+S | Available in File menu |
+| Compile | F5 | Build reachable stages |
+| Run | Ctrl+Enter | Reuse current compilation or compile first; execute in worker |
+| Stop | Shift+F5 | Cancel execution or pending input |
+| Clear Terminal | Ctrl+L | Clear terminal display |
 
-Sample (`invalid_syntax.tiny`):
+Resize panels with the splitters. Double-click token, symbol or AST rows to navigate to source when results are current. Expand AST nodes to inspect their structure and actual semantic type/symbol annotations.
 
+## Smart editor
+
+Type a keyword prefix or press **Ctrl+Space** for supported Tiny keywords, operators, statements, templates and analyzer-resolved variables in lexical scope. Use Up/Down to choose, Enter/Tab to accept, or Esc to dismiss. Suggestions replace only the typed prefix and never execute code. No functions, arrays, `for`, `print`, or other unsupported syntax is suggested. Tiny has `read`/`write` statements, not callable built-in functions.
+
+The editor pairs parentheses, braces and double quotes; indents blocks; highlights matching brackets; and offers hover descriptions. Debounced background compilation updates all stage snapshots and underlines real diagnostics. Revision guards reject late results from older edits. Ctrl+Z/Ctrl+Y and standard cut/copy/paste/select-all shortcuts remain available. Square brackets are not paired because Tiny does not support arrays.
+
+## Program Library and Demo Mode
+
+**Program Library** on the toolbar or sidebar opens 27 categorized programs: 23 valid examples and four explicitly labelled intentional error demonstrations. Each has a description, concepts, source preview, sample input, expected output and expected diagnostic where applicable. Load creates an unsaved editable copy; Run Example uses documented sample input; Inspect Compilation builds without running. Original library files are not changed by loading or editing.
+
+Enable **Demo Mode** to open the live pipeline when compiling/running. Navigate freely among all results. The trace's **Replay Step**, **Replay Continue**, **Pause Replay** and **Reset Replay** navigate captured instructions and highlight source lines; they do not re-execute the VM or act as debugger breakpoints.
+
+## Graphs and complexity
+
+The pipeline uses real stage statuses and links to the corresponding inspector. The CFG partitions actual IR into basic blocks with labelled true/false, jump and next edges, including loop back edges and short-circuit logic. Select blocks for full instructions, pan, zoom with Ctrl+wheel, or use Fit. Symbol search filters actual table rows.
+
+VM history records instruction pointer, next pointer, instruction, source line, post-instruction variables/temporaries, stack and output delta, including failed instructions. Capture is limited to the first 2,000 instructions, 256 variable values and 256 stack values per row, and 4,096 output characters per instruction. Truncation is labelled; program execution and terminal output continue normally.
+
+Complexity Analysis estimates **asymptotic upper bounds**, separately from actual VM instruction counts. It supports monotone linear counters, multiplication/division by a constant factor, invariant bounds, and independent nested loops with reset counters. It reports **Unable to determine** for unsupported or ambiguous patterns such as GCD's recurrence, compound loop conditions, conditional updates or dependent bounds. Literal-bound loops are O(1) with respect to runtime input. Space is O(1) **scalar slots** for this fixed scalar language; Python integer bit sizes and IDE/input/output buffers are explicitly excluded. It does not claim exact time or bytes. See [analysis scope](docs/COMPLEXITY.md).
+
+## Inspectable stages
+
+| Stage | Data from the actual run |
+|---|---|
+| Source Code | Captured source snapshot |
+| Lexical Analysis | Token kind, raw lexeme, decoded value, line and column, including EOF |
+| Syntax Analysis | Expandable AST; recovered partial tree on syntax errors |
+| Semantic Analysis | Analyzer diagnostics, check summary and annotated AST |
+| Symbol Table | Name, type, scope depth, unique storage, declaration location and usage |
+| Intermediate Code | Three-address instructions generated from the annotated AST |
+| Target / VM Code | Indexed stack-machine instructions generated from the IR |
+| Execution / Diagnostics | Program output, diagnostics, instruction count and final VM memory |
+
+Statuses distinguish pending, active, completed, waiting, partial, error, blocked, cancelled and not run. Errors preserve earlier results and block later stages. Semantic errors retain partial declarations. Fast stages may complete too quickly for their active state to be visible.
+
+## Tiny example
+
+```text
+var a: int;
+var b: int;
+read a;
+read b;
+while (b != 0) {
+    var t: int = b;
+    b = a % b;
+    a = t;
+}
+write "GCD =", a;
 ```
-examples/invalid_syntax.tiny:2:15: syntax error: expected ';' at the end of the declaration, found identifier 'x'
-    2 | var x: int = 5
-      |               ^
-examples/invalid_syntax.tiny:3:8: syntax error: expected an expression, found ';'
-    3 | x = x + ;
-      |        ^
-...
-examples/invalid_syntax.tiny: 4 errors; compilation failed.
-```
 
-## Tests
+The existing typed Tiny dialect supports `int`, `bool`, block scope, shadowing, assignment, `if`/`else`, `while`, `read`, `write`, arithmetic, comparisons and short-circuit logic. Strings are permitted in `write`, not as variable types. Comments use `//` or `/* ... */`. See [language specification](docs/LANGUAGE_SPEC.md) and [grammar](docs/GRAMMAR.md).
+
+## Test and verify
 
 ```powershell
-python -m unittest discover -s tests -t . -v      # all tests, verbose
-python -m unittest discover -s tests -t .         # all tests, quiet
-python -m unittest tests.test_parser              # a single module
+$env:QT_QPA_PLATFORM = "offscreen"
+.\.venv\Scripts\python.exe -m unittest discover -s tests -t . -v
+# Save fresh test evidence:
+.\.venv\Scripts\python.exe tools\verify_project.py
+# Launch a native window and capture real screenshots:
+Remove-Item Env:QT_QPA_PLATFORM -ErrorAction SilentlyContinue
+.\.venv\Scripts\python.exe tools\verify_gui.py
 ```
 
-(`pytest` also works if installed: `python -m pytest tests`.)
-See [docs/TESTING.md](docs/TESTING.md) for the test plan and the recorded results.
+On Windows, **272 tests passed with zero skips**, including all 198 original compiler/CLI tests and 15 real-time/terminal acceptance tests. The suite verifies every valid library example against independent expected fixtures through VM, TAC and GUI execution, and checks each intended error. Native Qt platform `windows` also launched and exercised all sidebar views, automatic stage compilation, cached Run, sequential input typed in the terminal, errors, Demo Mode, CFG/trace, completion and complexity. Evidence is in [testing documentation](docs/TESTING.md), `docs/test-results.json`, `tests/latest-results.txt` and `screenshots/verification.json`. Without PySide6, GUI tests are skipped; that does not verify desktop functionality.
 
-## Project layout
+## Command line compatibility
 
-```
-Chirayu-Project/
-  main.py                    entry point (python main.py FILE)
-  tiny_compiler/             the compiler package (lexer, parser, semantic, ir, codegen, vm, ...)
-  examples/                  .tiny programs + .expected output (+ .input where needed)
-  tests/                     unit, integration and end-to-end tests (unittest)
-  docs/                      LANGUAGE_SPEC, GRAMMAR, ARCHITECTURE, TESTING
-  report/                    Word project report (.docx)
-  screenshots/               how to capture the review screenshots
-  tools/build_report.py      regenerates the Word report from the real code and test results
+```powershell
+python main.py examples\hello.tiny
+python -m tiny_compiler examples\loop.tiny --all
+python main.py examples\gcd.tiny --input "84 36"
+python main.py examples\arithmetic.tiny --tokens --ast --symbols --ir --code --check
+python main.py examples\loop.tiny --backend ir
 ```
 
-## Troubleshooting
+CLI options, VM/TAC execution, exit codes and expected outputs are preserved. `main.py` remains the CLI; `gui.py` is the desktop launcher.
 
-| Symptom | Fix |
-|---|---|
-| `python: command not found` / opens Microsoft Store | Install Python 3.8+ from python.org, tick "Add to PATH", or use `py -3` |
-| `ModuleNotFoundError: tiny_compiler` | Run commands from the repository root (the folder containing `main.py`) |
-| `tiny: cannot read '...'` (exit 4) | Wrong path or file name; check the path relative to the current folder |
-| `no more input available for 'read x'` | Provide values with `--input "..."` or pipe a file into standard input |
-| Program seems to hang waiting | A `read` statement is waiting for keyboard input (a `read x>` prompt is shown on a terminal) |
-| `execution stopped after N steps` | An infinite loop, or raise `--max-steps` for a long computation |
-| `variable 'x' is not declared` | Declare it first with `var x: int;` |
-| `the condition of 'if' must be of type 'bool'` | Use a comparison, e.g. `if (x != 0)`, instead of `if (x)` |
-| Non-ASCII text in the source | Only allowed inside string literals and comments |
+## Files
 
-## 3-5 minute demonstration script (academic review)
+```text
+Tiny-compiler/
+  gui.py, main.py                 desktop and CLI launchers
+  requirements.txt               PySide6
+  requirements-dev.txt           optional report libraries
+  tiny_compiler/
+    lexer.py, parser.py, ast_nodes.py
+    semantic.py, symbol_table.py, diagnostics.py
+    pipeline.py, ir.py, codegen.py, runtime.py, vm.py, cli.py
+    completion.py, control_flow.py, execution_trace.py
+    program_library.py, complexity.py
+    ide/
+      __main__.py                desktop entry point
+      window.py                  layout, actions, navigation and terminal
+      editor.py                  line numbers and syntax highlighting
+      views.py                   artifact inspectors
+      worker.py                  compiler and VM QThread
+      session.py                 run state and queued input/output
+      terminal.py                formatted persistent terminal transcript
+      visuals.py, library.py     graphs, trace replay and program library
+      editor_analysis.py         debounced revision-guarded stage compilation
+  examples/                      13 original programs plus 27 library programs
+    library.json, library/       metadata and source fixtures
+  tests/                         original tests, test_ide.py, latest-results.txt
+  docs/                          architecture, language, grammar, test evidence
+  screenshots/                   native window/popup captures and verification JSON
+  report/Tiny_Programming_Language_Compiler_Report.docx
+  tools/                         report, verification and packaging utilities
+  dist/Tiny-Compiler-IDE.zip      source distribution
+```
 
-1. **(30 s) Problem and pipeline** - show the pipeline diagram in
-   [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): lexer -> parser -> semantic analysis -> TAC ->
-   stack code -> VM.
-2. **(45 s) The language** - open `examples/loop.tiny`; mention `int`/`bool`, `while`, `if`,
-   `read`/`write`, block scope.
-3. **(60 s) Compile and run** -
-   `python main.py examples/arithmetic.tiny` (point at precedence: `a + b * 2 = 13`,
-   truncating division `-7 / 3 = -2`).
-4. **(60 s) Show the stages** - `python main.py examples/loop.tiny --tokens --ast --ir --code`;
-   explain tokens with positions, the AST, temporaries `$t1` and labels `L1`, and how
-   `ifFalse` becomes `JZ`.
-5. **(30 s) Input/output** - `python main.py examples/gcd.tiny --input "84 36"` -> `12`.
-6. **(45 s) Error handling** - `python main.py examples/invalid_syntax.tiny` (several errors with
-   a caret) and `python main.py examples/invalid_semantics.tiny` (type and scope errors).
-   Then `python main.py examples/invalid_runtime.tiny --input 0` (run-time error, exit code 3).
-7. **(30 s) Verification** - `python -m unittest discover -s tests -t .` and state the number of
-   tests that ran and passed.
-8. **Close** - limitations (VM target only, no functions/arrays/floats) and future work.
+See [architecture](docs/ARCHITECTURE.md) for the implementation. The editable Word report maps the GUI to the Review 2 requirements.
 
-## Documentation
+## Report and package
 
-* [docs/LANGUAGE_SPEC.md](docs/LANGUAGE_SPEC.md) - lexical rules, types, scope, semantics
-* [docs/GRAMMAR.md](docs/GRAMMAR.md) - EBNF grammar and parsing notes
-* [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) - modules, data flow, design decisions
-* [docs/TESTING.md](docs/TESTING.md) - test plan and recorded results
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
+.\.venv\Scripts\python.exe tools\build_report.py
+.\.venv\Scripts\python.exe tools\package_project.py
+```
+
+The report builder reads recorded evidence; refresh it with the verification commands after changing code. It does not silently invent or rerun test results.
+
+## Limitations
+
+- Target code runs on the included VM; it does not produce a native executable.
+- Compiler cancellation occurs between passes. Large sources can take time to parse, copy and display; the IDE is intended for teaching-sized programs.
+- The newest compilation and most recent execution are retained separately. Terminal and run state live in memory until the window closes.
+- No functions, arrays, floats, optimizer, breakpoints or VM instruction stepping.
+- Trace controls replay a bounded recorded history. Completion and static analysis are conservative, and complexity is a unit-cost scalar model rather than a Python bit-complexity analysis.
+- Windows was exercised; Linux and macOS were not tested. Smaller windows can require scrolling or resizing panels.
+- The ZIP contains sources, not Python, an offline installer or a standalone `.exe`.

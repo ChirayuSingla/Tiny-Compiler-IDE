@@ -1,0 +1,4 @@
+// Arithmetic operations
+var a: int = 17;
+var b: int = 5;
+write a + b, a - b, a * b, a / b, a % b;

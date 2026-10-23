@@ -1,0 +1,4 @@
+// Positive or negative
+var n: int;
+read n;
+if (n > 0) { write "positive"; } else if (n < 0) { write "negative"; } else { write "zero"; }

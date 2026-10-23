@@ -1,0 +1,3 @@
+// Semantic error demonstration
+var x: int = true;
+write x;

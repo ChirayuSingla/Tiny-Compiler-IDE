@@ -1,3 +1,2 @@
-# The compiler itself uses only the Python standard library (Python 3.8+).
-# Optional, only needed to rebuild the Word report (tools/build_report.py):
-#   pip install -r requirements-dev.txt
+# Desktop IDE (Python 3.10+). The compiler and CLI use only the standard library.
+PySide6>=6.6,<7

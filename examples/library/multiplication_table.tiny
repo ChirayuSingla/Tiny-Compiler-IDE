@@ -1,0 +1,5 @@
+// Multiplication table
+var n: int;
+read n;
+var i: int = 1;
+while (i <= 5) { write n, "x", i, "=", n * i; i = i + 1; }

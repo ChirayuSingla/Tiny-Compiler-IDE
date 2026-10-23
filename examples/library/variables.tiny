@@ -1,0 +1,4 @@
+// Variable declarations
+var count: int = 7;
+var ready: bool = true;
+write "count =", count, "ready =", ready;

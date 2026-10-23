@@ -1,0 +1,36 @@
+{
+  "timestamp": "2026-10-19T22:41:04+05:30",
+  "python": "3.10.11",
+  "os": "Windows-10-10.0.26200-SP0",
+  "qt_platform": "offscreen",
+  "command": [
+    "C:\\Users\\chirayu singla\\OneDrive\\Desktop\\Tiny-compiler\\.venv\\Scripts\\python.exe",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-t",
+    ".",
+    "-v"
+  ],
+  "exit_code": 0,
+  "tests": 272,
+  "seconds": 33.074,
+  "passed_by_module": {
+    "test_codegen_vm": 39,
+    "test_complexity": 14,
+    "test_editor": 9,
+    "test_end_to_end": 28,
+    "test_ide": 20,
+    "test_ir": 24,
+    "test_lexer": 22,
+    "test_parser": 48,
+    "test_program_library": 7,
+    "test_realtime": 15,
+    "test_semantics": 37,
+    "test_visualizations": 9
+  },
+  "skipped": 0,
+  "success": true
+}

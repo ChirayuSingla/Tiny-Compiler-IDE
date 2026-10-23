@@ -7,3 +7,5 @@ venv/
 .idea/
 .vscode/
 ~$*.docx
+report/.qa/
+dist/
